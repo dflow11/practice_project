@@ -1,0 +1,23 @@
+{
+  "name": "practice_project",
+  "version": "1.0.0",
+  "description": "slot machine js project",
+  "homepage": "https://github.com/dflow11/practice_project#readme",
+  "bugs": {
+    "url": "https://github.com/dflow11/practice_project/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dflow11/practice_project.git"
+  },
+  "license": "ISC",
+  "author": "Diego",
+  "type": "commonjs",
+  "main": "project.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "prompt-sync": "^4.2.0"
+  }
+}
