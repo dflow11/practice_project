@@ -6,12 +6,25 @@
     3. Collect bet amount - COMPLETE ? I THINK
       All these functions (^^^) follow about the the same order,
       where they have confirmation the user input is a number or else the function will not break the while true loop.
+
     4. Spin the slot machine
     5. Check if player won
     6. Give the user the winnings.
     7. Play again or Prompt the user they're out of funds.
 */
 const prompt = require("prompt-sync")();
+
+// 9x9 grid, old school slot style, not the new crazy las vegas machines.
+const ROWS = 3;
+const COLLUMNS = 3;
+
+const SYMBOLS_COUNT = {
+  "A" : 2, "B" : 4, "C" : 6,"D" : 6
+}
+
+const SYMBOL_VALUES = {
+  "A" : 5, "B" : 4, "C" : 3, "D" : 2
+}
 
 function deposit() {
   while (true) {
@@ -54,6 +67,16 @@ function getBet(balance,lines) {
   }
 };
 
+function spin() {
+  const symbols = []; 
+  for (const [symbol, count] of Object.entries(SYMBOLS_COUNT)) {
+      for (let i = 0; i < count; i++) {
+        symbols.push(symbol);
+      }
+  }
+  console.log(symbols);
+};
+spin();
 let balance = deposit();
 const numLines = getNumLines();
 const bet = getBet(balance, numLines);
