@@ -74,9 +74,21 @@ function spin() {
         symbols.push(symbol);
       }
   }
-  console.log(symbols);
+  
+  const reels = [[], [], []];
+  for (let i = 0; i < COLLUMNS; i++) {
+      const tempReelSymbols = [...symbols];
+    for(let j = 0; j < ROWS; j++) {
+        const random = Math.floor(Math.random() * tempReelSymbols.length);
+        const selectedSymbol = tempReelSymbols[random];
+        reels[i].push(selectedSymbol);
+        tempReelSymbols.splice(random, 1);
+    }
+  }
+
+  return reels;
 };
-spin();
+
 let balance = deposit();
 const numLines = getNumLines();
 const bet = getBet(balance, numLines);
