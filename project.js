@@ -10,7 +10,7 @@
     4. Spin the slot machine - COMPLETE !
     5. Check if player won - COMPLETE !
     6. Give the user the winnings - COMPLETE !
-    7. Play again or Prompt the user they're out of funds.
+    7. Play again or Prompt the user they're out of funds - COMPLETE !
 */
 const prompt = require("prompt-sync")();
 
@@ -185,20 +185,35 @@ function getWinnings (rows, bets, lines) {
   return winnings;
 };
 
+function game() {
+  let balance = deposit();
 
-let balance = deposit();
-const numLines = getNumLines();
-const bet = getBet(balance, numLines);
-const totalBet = bet * numLines
-const reels = spin();
-const rows = transpose(reels);
-printRows(rows);
-const winnings = getWinnings(rows, bet, numLines);
-if (winnings > 0) {
-  console.log("Congratulations! You won, $" + winnings);
-} else {
-  console.log("Unfortunately, you did not win.");
-}
+  while (true) {
+    const numLines = getNumLines();
+    const bet = getBet(balance, numLines);
+    const totalBet = bet * numLines
+    const reels = spin();
+    const rows = transpose(reels);
+    printRows(rows);
+    const winnings = getWinnings(rows, bet, numLines);
 
-balance = balance - totalBet + winnings;
-console.log("Your new balance is " + balance);
+    if (winnings > 0) {
+      console.log("Congratulations! You won, $" + winnings);
+    } else {
+      console.log("Unfortunately, you did not win.");
+    }
+    balance = balance - totalBet + winnings;
+    console.log("Your new balance is " + balance);
+
+    if (balance <= 0) {
+      console.log("Out of funds!");
+      break;
+    }
+
+    const restartGame = prompt("Would you like to try again? (y/n)? ");
+    if (restartGame.toLowerCase() != "y") break;
+
+  }
+};
+
+game();
