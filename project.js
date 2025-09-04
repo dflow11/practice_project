@@ -3,20 +3,20 @@
 
 /*  1. Deposit some money - COMPLETE !
     2. Determine amount of lines to bet on - COMPLETE !
-    3. Collect bet amount - COMPLETE ? I THINK
+    3. Collect bet amount - COMPLETE !
       All these functions (^^^) follow about the the same order,
       where they have confirmation the user input is a number or else the function will not break the while true loop.
 
-    4. Spin the slot machine
+    4. Spin the slot machine - COMPLETE !
     5. Check if player won
     6. Give the user the winnings.
     7. Play again or Prompt the user they're out of funds.
 */
 const prompt = require("prompt-sync")();
 
-// 9x9 grid, old school slot style, not the new crazy las vegas machines.
+// 3x3 grid, old school slot style, not the new crazy las vegas machines.
 const ROWS = 3;
-const COLLUMNS = 3;
+const COLUMNS = 3;
 
 const SYMBOLS_COUNT = {
   "A" : 2, "B" : 4, "C" : 6,"D" : 6
@@ -67,6 +67,27 @@ function getBet(balance,lines) {
   }
 };
 
+/**
+ *  - Making a note to fully comprehend function / process. 
+ * spin()
+ * Builds the slot outcome as 3 vertical reels (columns).
+ *
+ * How it works:
+ * 1) Creates a weighted pool of symbols from SYMBOLS_COUNT (more copies = more common).
+ * 2) For each column:
+ *    - Copy the full pool of symbols to keep each reel independent.
+ *    - Randomly pick ROWS times, so in this case 3 per column, from that pool, removing the picked symbol each time
+ *      (sampling without replacement per column).
+ * 3) Return a column-major 2D array: reels[colIndex][rowIndex].
+ *
+ * Example for this 3x3 style grid (COLUMNS=3, ROWS=3):
+ * [
+ *   ['A','B','D'], // column 1 (top→bottom)
+ *   ['C','B','A'], // column 2
+ *   ['C','D','C']  // column 3
+ * ]
+ */
+
 function spin() {
   const symbols = []; 
   for (const [symbol, count] of Object.entries(SYMBOLS_COUNT)) {
@@ -76,7 +97,7 @@ function spin() {
   }
   
   const reels = [[], [], []];
-  for (let i = 0; i < COLLUMNS; i++) {
+  for (let i = 0; i < COLUMNS; i++) {
       const tempReelSymbols = [...symbols];
     for(let j = 0; j < ROWS; j++) {
         const random = Math.floor(Math.random() * tempReelSymbols.length);
@@ -89,6 +110,62 @@ function spin() {
   return reels;
 };
 
+/**
+ *  - Making a note to fully comprehend function / process. 
+ * transpose(reels)
+ * Converts column-major data (reels) into row-major lines for display & payouts.
+ *
+ * Given reels[col][row], the function produces rows[row][col] so we can:
+ * - Print the horizontal lines cleanly.
+ * - Evaluate the player's bets line-by-line (top, middle, bottom).
+ *
+ * So it turns, for example:
+ * reels = [
+ *   ['A','B','D'],
+ *   ['C','B','A'],
+ *   ['C','D','C']
+ * ]
+ * 
+ * Into:
+ * 
+ * rows = [
+ *   ['A','C','C'], // top row (left→right)
+ *   ['B','B','D'], // middle row
+ *   ['D','A','C']  // bottom row
+ * ]
+ */
+
+function transpose(reels) {
+  const rows = [];
+
+
+  for (let i = 0; i< ROWS; i++) {
+    rows.push([]);
+    for (let j = 0; j < COLUMNS ; j++) {
+      rows[i].push(reels[j][i])
+    }
+  }
+
+  return rows
+};
+
+function printRows(rows) {
+  for (const row of rows) {
+    let rowString = " ";
+    for (const [i,symbol] of row.entries()) {
+      rowString += symbol;
+      if (i != row.length -1) {
+        rowString += " | ";
+      }
+    }
+    console.log(rowString);
+  }
+};
+
+
 let balance = deposit();
 const numLines = getNumLines();
 const bet = getBet(balance, numLines);
+const reels = spin();
+const rows = transpose(reels);
+printRows(rows);
