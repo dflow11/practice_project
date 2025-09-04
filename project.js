@@ -1,20 +1,5 @@
-// The project that this will be is a javascript slot machine! 
-// since js is my most known language, im learning node with this project using prompt-sync and other features in the plan for this project.
-
-/*  1. Deposit some money - COMPLETE !
-    2. Determine amount of lines to bet on - COMPLETE !
-    3. Collect bet amount - COMPLETE !
-      All these functions (^^^) follow about the the same order,
-      where they have confirmation the user input is a number or else the function will not break the while true loop.
-
-    4. Spin the slot machine - COMPLETE !
-    5. Check if player won - COMPLETE !
-    6. Give the user the winnings - COMPLETE !
-    7. Play again or Prompt the user they're out of funds - COMPLETE !
-*/
 const prompt = require("prompt-sync")();
 
-// 3x3 grid, old school slot style, not the new crazy las vegas machines.
 const ROWS = 3;
 const COLUMNS = 3;
 
@@ -29,9 +14,8 @@ const SYMBOL_VALUES = {
 function deposit() {
   while (true) {
     const depositAmount = prompt("Enter a deposit amount: ");
-    const numberDepositAmount = parseFloat(depositAmount); // turn string literal into float
+    const numberDepositAmount = parseFloat(depositAmount); 
 
-    // if user inputs a non number character, we return NaN and ask for a number.
       if (isNaN(numberDepositAmount) || numberDepositAmount <= 0) {
       console.log("Invalid deposit amount, try again.");
     } else {
