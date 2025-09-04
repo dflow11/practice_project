@@ -19,7 +19,7 @@ const ROWS = 3;
 const COLUMNS = 3;
 
 const SYMBOLS_COUNT = {
-  "A" : 2, "B" : 4, "C" : 6,"D" : 6
+  "A" : 3, "B" : 4, "C" : 5,"D" : 6
 }
 
 const SYMBOL_VALUES = {
@@ -43,7 +43,7 @@ function deposit() {
 function getNumLines() {
   while (true) {
     const numLines = prompt("Enter the number of lines you would like to bet on (1-3): ");
-    const numberNumLines = parseFloat(numLines);
+    const numberNumLines = parseInt(numLines);
 
       if (isNaN(numberNumLines) || numberNumLines <= 0 || numberNumLines > 3) {
       console.log("Invalid number of lines, try again.");
@@ -207,13 +207,20 @@ function game() {
 
     if (balance <= 0) {
       console.log("Out of funds!");
-      break;
+      return;
     }
-
-    const restartGame = prompt("Would you like to try again? (y/n)? ");
-    if (restartGame.toLowerCase() != "y") break;
-
-  }
+  
+    const continueGame = prompt("Would you like to try again? (y/n): ");
+    if (continueGame.toLowerCase() != "y") return;
+    }
 };
 
-game();
+function main() {
+  while (true) {
+    game();
+    const again = prompt("Restart Game? (y/n): ");
+    if (again.trim().toLowerCase() != "y") break;
+  }
+}
+
+main();
