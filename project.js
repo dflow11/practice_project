@@ -8,8 +8,8 @@
       where they have confirmation the user input is a number or else the function will not break the while true loop.
 
     4. Spin the slot machine - COMPLETE !
-    5. Check if player won
-    6. Give the user the winnings.
+    5. Check if player won - COMPLETE !
+    6. Give the user the winnings - COMPLETE !
     7. Play again or Prompt the user they're out of funds.
 */
 const prompt = require("prompt-sync")();
@@ -162,10 +162,43 @@ function printRows(rows) {
   }
 };
 
+function getWinnings (rows, bets, lines) {
+  let winnings = 0;
+
+  for (let row = 0; row < lines; row++) {
+    const symbols = rows[row];
+    const first = symbols[0];
+    let allSame = true;
+
+    for (const symbol of symbols) {
+      if (symbol != first) {
+        allSame = false;
+        break;
+      }
+    }
+
+    if (allSame) {
+      winnings += bets * SYMBOL_VALUES[first];
+    }
+  }
+
+  return winnings;
+};
+
 
 let balance = deposit();
 const numLines = getNumLines();
 const bet = getBet(balance, numLines);
+const totalBet = bet * numLines
 const reels = spin();
 const rows = transpose(reels);
 printRows(rows);
+const winnings = getWinnings(rows, bet, numLines);
+if (winnings > 0) {
+  console.log("Congratulations! You won, $" + winnings);
+} else {
+  console.log("Unfortunately, you did not win.");
+}
+
+balance = balance - totalBet + winnings;
+console.log("Your new balance is " + balance);
