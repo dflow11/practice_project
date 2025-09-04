@@ -51,26 +51,6 @@ function getBet(balance,lines) {
   }
 };
 
-/**
- *  - Making a note to fully comprehend function / process. 
- * spin()
- * Builds the slot outcome as 3 vertical reels (columns).
- *
- * How it works:
- * 1) Creates a weighted pool of symbols from SYMBOLS_COUNT (more copies = more common).
- * 2) For each column:
- *    - Copy the full pool of symbols to keep each reel independent.
- *    - Randomly pick ROWS times, so in this case 3 per column, from that pool, removing the picked symbol each time
- *      (sampling without replacement per column).
- * 3) Return a column-major 2D array: reels[colIndex][rowIndex].
- *
- * Example for this 3x3 style grid (COLUMNS=3, ROWS=3):
- * [
- *   ['A','B','D'], // column 1 (top→bottom)
- *   ['C','B','A'], // column 2
- *   ['C','D','C']  // column 3
- * ]
- */
 
 function spin() {
   const symbols = []; 
@@ -94,30 +74,6 @@ function spin() {
   return reels;
 };
 
-/**
- *  - Making a note to fully comprehend function / process. 
- * transpose(reels)
- * Converts column-major data (reels) into row-major lines for display & payouts.
- *
- * Given reels[col][row], the function produces rows[row][col] so we can:
- * - Print the horizontal lines cleanly.
- * - Evaluate the player's bets line-by-line (top, middle, bottom).
- *
- * So it turns, for example:
- * reels = [
- *   ['A','B','D'],
- *   ['C','B','A'],
- *   ['C','D','C']
- * ]
- * 
- * Into:
- * 
- * rows = [
- *   ['A','C','C'], // top row (left→right)
- *   ['B','B','D'], // middle row
- *   ['D','A','C']  // bottom row
- * ]
- */
 
 function transpose(reels) {
   const rows = [];
